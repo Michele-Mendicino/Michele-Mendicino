@@ -1,0 +1,352 @@
+<!-- Protetta da un controllo per l’autenticazione, accesso limitato ad utenti con ruolo di amministratore,
+deve mostrare i seguenti contenuti:
+1. Se l’utente non ha già effettuato le operazioni di login, deve essere visualizzato un form di login in
+cui inserire UserID e password, per poi essere reindirizzati, una volta autenticati, alla stessa pagina
+protetta dalla quale è scaturita la richiesta di login.
+2. Se l’utente è di tipo base “USER” deve essere reindirizzato a una pagina di errore (errore.html)
+contenente un messaggio che specifichi che l’utente non dispone di diritti sufficienti alla gestione
+del e-commerce e un link per il logout.
+3. Se l’utente è di tipo admin (“ADMIN”) deve essere visualizzato un pannello di amministrazione
+contenente le 3 seguenti funzionalità:
+a. Inserimento di un nuovo prodotto – link a inserisci.html
+b. Elenco dei prodotti amministrabili – link a view.html
+c. Logout -->
+
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pannello di Controllo - Amministrazione</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/styles/panel.css">
+</head>
+
+<body>
+    <div id="bodypanel"></div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <img style="height: 70px; width: auto;" class="logo" src="../assets/img/logo.png" alt="">
+            <a class="navbar-brand" href="/views/index.html" style="padding: 0!important;"><img style="width: 222px; display: flex;" class="txt-logo" src="../assets/img/NerdVaultLogo.png" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+    
+                    <li class="nav-item">
+                        <button type="button" id="cart-btn" class="btn nav-link" data-bs-toggle="modal"
+                            data-bs-target="#cartModal" data-bs-whatever="@mdo">
+                            <i class="fa-solid fa-shopping-cart"></i>
+    
+                            <span id="cart-item-count"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger"
+                                style="display: none;">
+                                0
+                            </span>
+    
+                            <span class="visually-hidden">Mostra carrello</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <!-- <button type="button" class="btn nav-link" id ="CheckSession">CheckSession</button> -->
+                        <button id="btnShop" type="button" class="btn nav-link"
+                            onclick="window.location.href='/views/shop.html'">Shop</button>
+                        <button id="btnOrders" type="button" class="btn nav-link" style="display: none;"
+                            onclick="window.location.href='/views/user.html'">I miei ordini</button>
+                        <button id="btnPanel" type="button" class="btn nav-link" style="display: none;"
+                            onclick="window.location.href='/views/panel.html'">Pannello di controllo</button>
+                        <button id="btnLogin" type="button" class="btn nav-link" data-bs-toggle="modal"
+                            data-bs-target="#loginModal" data-bs-whatever="@mdo">Login</button>
+                        <button id="btnLogout" type="button" class="btn nav-link" style="display: none;">Logout</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- MODALE LOGIN +++ VA CON LA NAVBAR -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="loginModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form di Login con action e method POST -->
+                    <form action="/auth/login" method="POST" id="loginForm">
+                        <div class="mb-3">
+                            <label for="inputEMail" class="col-form-label">E-mail</label>
+                            <input type="email" class="form-control" id="inputEMail" name="email"
+                                placeholder="esempio@email.it" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputPassword" class="col-form-label">Password</label>
+                            <input type="password" class="form-control" id="inputPassword" name="password" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Invia</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FINE MODALE LOGIN +++ VA CON LA NAVBAR -->
+    
+    <!-- MODALE CARRELLO -->
+    <!-- Per eliminare effetto tema scuro, togliere data-bst-theme="dark" e classe text-white dal div 2 righe sotto -->
+    <div class="modal fade" id="cartModal" data-bs-theme="dark" tabindex="-1" aria-labelledby="#exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable text-white me-md-3" data-bs-theme="dark">
+            <div class="modal-content h-100" data-bs-theme="dark">
+                <div class="modal-header" data-bs-theme="dark">
+                    <h1 class="modal-title fs-5" id=""></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- da togliere -->
+                </div>
+                <h1 style="text-align: center;">CARRELLO</h1>
+                <div class="modal-body" data-bs-theme="dark" id="cart-body">
+    
+    
+    
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="">Concludi ordine</button>
+                        <!-- AGGIUNGERE REINDIRIZZAMENTO A USER-->
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+    <!-- FINE MODALE CARRELLO -->
+
+  <div id="apparamm" style="height: 130px;"> </div>
+
+    <div class="container" style="margin-bottom: 50px;">
+        <div class="d-flex justify-content-between my-3">
+            <div>
+                <h1 class="h2">Benvenuto nel pannello di controllo!</h1>
+                <h2 class="h6">Modifica, elimina oppure aggiungi un prodotto.</h2>
+            </div>
+            <!-- Aggiungi il pulsante per aprire la modale -->
+            <button id="open-add-product-modal" class="btn btn-primary mt-4" style="margin: 0 !important; padding: 0 12px; margin: 15px 0 !important;">Aggiungi Prodotto</button>
+        </div>
+    </div>
+
+    <!-- Modale per aggiungere un nuovo prodotto -->
+    <div id="new-product-modal" class="modal" tabindex="-1" aria-labelledby="new-product-modal-label">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="new-product-modal-label">Aggiungi Nuovo Prodotto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-product-form">
+                        <!-- Campi per l'inserimento del prodotto -->
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descrizione" class="form-label">Descrizione</label>
+                            <textarea class="form-control" id="descrizione"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoria" class="form-label">Categoria</label>
+                            <select class="form-control" id="categoria" required>
+                                <option value="NOVITA">NOVITA</option>
+                                <option value="PREVENDITA">PREVENDITA</option>
+                                <option value="GAMES">GAMES</option>
+                                <option value="MERCH">MERCH</option>
+                                <option value="ACCESSORI">ACCESSORI</option>
+                                <option value="SPECIALE">SPECIALE</option>
+                                <option value="ALTRO">ALTRO</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prezzo" class="form-label">Prezzo</label>
+                            <input type="number" class="form-control" id="prezzo" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rimanenza" class="form-label">Rimanenza</label>
+                            <input type="number" class="form-control" id="rimanenza" required>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-center gap-5">
+                            <div class="form-check">
+                                <label for="abilitato" class="form-check-label">Abilitato</label>
+                                <input type="checkbox" id="abilitato" class="form-check-input">
+                            </div>
+                            <div class="form-check">
+                                <label for="visibile" class="form-check-label">Visibile</label>
+                                <input type="checkbox" id="visibile" class="form-check-input">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="immagine" class="form-label">Immagine</label>
+                            <input type="file" class="form-control" id="immagine" accept="image/jpg, image/png, image/jpeg, image/webp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="inizio_prevendita" class="form-label">Inizio Prevendita</label>
+                            <input type="date" class="form-control" id="inizio_prevendita">
+                        </div>
+                        <div class="mb-3">
+                            <label for="data_uscita" class="form-label">Data Uscita</label>
+                            <input type="date" class="form-control" id="data_uscita">
+                        </div>
+                        <div class="mb-3">
+                            <label for="sconto_prevendita" class="form-label">Sconto Prevendita</label>
+                            <input type="number" class="form-control" id="sconto_prevendita">
+                        </div>
+                        <div class="text-center"> 
+                            <button type="submit" class="btn btn-primary" id="submit-product-btn">Aggiungi Prodotto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabella per visualizzare i prodotti -->
+    <div class="container" id="product-table-container">
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th class="text-center">Immagine</th>
+                    <th class="text-center">Nome</th>
+                    <th class="text-center">Categoria</th>
+                    <th class="text-center">Prezzo</th>
+                    <th class="text-center">Rimanenza</th>
+                    <th class="text-center">Azioni</th>
+                </tr>
+            </thead>
+            <tbody id="product-table-body"></tbody>
+        </table>
+    </div>
+
+    <!-- Paginazione -->
+    <nav aria-label="Page navigation example">
+        <div class="container" style="margin-top: 25px; backdrop-filter: none; background-color:none; border: none; box-shadow: none; ">
+            <ul class="pagination justify-content-end">
+              <li class="page-item disabled">
+                <button id="prev-page" class="page-link">Previous</button>
+              </li>
+              <li class="page-item pag-btn active" data-id="0"><a class="page-link">1</a></li>
+              <li class="page-item pag-btn" data-id="1"><a class="page-link">2</a></li>
+              <li class="page-item pag-btn" data-id="2"><a class="page-link">3</a></li>
+              <li class="page-item pag-btn" data-id="3"><a class="page-link">4</a></li>
+              <li class="page-item pag-btn" data-id="4"><a class="page-link">5</a></li>
+              <li class="page-item pag-btn" data-id="5"><a class="page-link">6</a></li>
+              <li class="page-item pag-btn" data-id="6"><a class="page-link">7</a></li>
+              <li class="page-item">
+                <button id="next-page" class="page-link" data-id="1">Next</button>
+              </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- Modale per modificare un prodotto -->
+    <div id="edit-product-modal" class="modal" tabindex="-1" aria-labelledby="edit-product-modal-label">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="edit-product-modal-label">Modifica Prodotto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-product-form">
+                        <!-- I campi per la modifica saranno precompilati -->
+                        <div class="mb-3">
+                            <label for="edit-nome" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="edit-nome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-descrizione" class="form-label">Descrizione</label>
+                            <textarea class="form-control" id="edit-descrizione" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-categoria" class="form-label">Categoria</label>
+                            <select class="form-control" id="edit-categoria" required>
+                                <option value="NOVITA">NOVITA</option>
+                                <option value="PREVENDITA">PREVENDITA</option>
+                                <option value="GAMES">GAMES</option>
+                                <option value="MERCH">MERCH</option>
+                                <option value="ACCESSORI">ACCESSORI</option>
+                                <option value="SPECIALE">SPECIALE</option>
+                                <option value="ALTRO">ALTRO</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-prezzo" class="form-label">Prezzo</label>
+                            <input type="number" class="form-control" id="edit-prezzo" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-rimanenza" class="form-label">Rimanenza</label>
+                            <input type="number" class="form-control" id="edit-rimanenza" required>
+                        </div>
+                        <!-- Campo per l'immagine -->
+                        <div class="mb-3">
+                            <label for="edit-immagine" class="form-label">Immagine</label>
+                            <div id="edit-immagine-container">
+                                <input type="file" class="form-control" id="edit-immagine" accept="image/jpg, image/png, image/jpeg, image/webp">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <img class="mt-3" id="edit-immagine-preview" src="" alt="Anteprima immagine" style="max-width: 200px; display: block;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-inizio_prevendita" class="form-label">Inizio Prevendita</label>
+                            <input type="date" class="form-control" id="edit-inizio_prevendita">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-data_uscita" class="form-label">Data Uscita</label>
+                            <input type="date" class="form-control" id="edit-data_uscita">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-sconto_prevendita" class="form-label">Sconto Prevendita</label>
+                            <input type="number" class="form-control" id="edit-sconto_prevendita">
+                        </div>
+                        <div class="mb-3 d-flex justify-content-center gap-5">
+                            <div class="form-check">
+                                <label for="edit-abilitato" class="form-check-label">Abilitato</label>
+                                <input type="checkbox" id="edit-abilitato" class="form-check-input">
+                            </div>
+                            <div class="form-check">
+                                <label for="edit-visibile" class="form-check-label">Visibile</label>
+                                <input type="checkbox" id="edit-visibile" class="form-check-input">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center gap-5">
+                            <button type="submit" class="btn btn-primary" id="update-product-btn">Conferma modifiche</button>
+                            <button type="button" class="btn btn-secondary" id="reset-edit-product-btn"><i class="fa-solid fa-rotate-left"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paginazione -->
+    <!-- <div id="pagination-container" class="d-flex justify-content-center mt-3 mb-4">
+        <button id="prev-page" class="btn btn-secondary" disabled>Precedente</button>
+        <div id="page-numbers" class="mx-3"></div>
+        <button id="next-page" data-id="1" class="btn btn-secondary">Successivo</button>
+    </div> -->
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/scripts/panel.js"></script>
+    <script src="/assets/scripts/panel-login.js"></script>
+    <script src="/assets/scripts/cart.js"></script>
+</body>
+
+</html>
+

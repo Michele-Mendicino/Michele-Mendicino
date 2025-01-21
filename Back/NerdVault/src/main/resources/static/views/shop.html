@@ -1,0 +1,216 @@
+<!-- Dovrà essere costituito da un elenco contenente i prodotti aggiornati dinamicamente, suddiviso in 2
+sezioni, la prima conterrà i prodotti disponibili, la seconda conterrà l’elenco dei prodotti prenotabili.
+Possibilità di filtrare i prodotti secondo alcune caratteristiche e secondo la disponibilità. I prodotti disponibili
+dovranno essere chiaramente contrassegnati.
+Ciascun prodotto dovrà essere rappresentato attraverso gli elementi:
+Nome– Descrizione – Categoria – Disponibilità - link alla pagina prodotto.html con passaggio dell’ID
+dell’evento come parametro url -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/styles/shop.css">
+    <title>Shop</title>
+</head>
+<body>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <img class="logo" src="" alt="">
+        <img style="height: 70px; width: auto;" class="logo" src="../assets/img/logo.png" alt="">
+        <a class="navbar-brand" href="/views/index.html" style="padding: 0!important;"><img style="width: 222px; display: flex;" class="txt-logo" src="../assets/img/NerdVaultLogo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+    
+            <li class="nav-item">
+              <button type="button" id="cart-btn" class="btn nav-link" data-bs-toggle="modal" data-bs-target="#cartModal"
+                data-bs-whatever="@mdo">
+                <i class="fa-solid fa-shopping-cart"></i>
+    
+                <span id="cart-item-count"
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger"
+                  style="display: none;">
+                  0
+                </span>
+    
+                <span class="visually-hidden">Mostra carrello</span>
+              </button>
+            </li>
+            <li class="nav-item">
+              <!-- <button type="button" class="btn nav-link" id ="CheckSession">CheckSession</button> -->
+              <button id="btnShop" type="button" class="btn nav-link"
+                onclick="window.location.href='/views/shop.html'">Shop</button>
+              <button id="btnOrders" type="button" class="btn nav-link" style="display: none;"
+                onclick="window.location.href='/views/user.html'">I miei ordini</button>
+              <button id="btnPanel" type="button" class="btn nav-link" style="display: none;"
+                onclick="window.location.href='/views/panel.html'">Pannello di controllo</button>
+              <button id="btnLogin" type="button" class="btn nav-link" data-bs-toggle="modal" data-bs-target="#loginModal"
+                data-bs-whatever="@mdo">Login</button>
+              <button id="btnLogout" type="button" class="btn nav-link" style="display: none;">Logout</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- MODALE LOGIN +++ VA CON LA NAVBAR -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="loginModalLabel">Login</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Form di Login con action e method POST -->
+            <form action="/auth/login" method="POST" id="loginForm">
+              <div class="mb-3">
+                <label for="inputEMail" class="col-form-label">E-mail</label>
+                <input type="email" class="form-control" id="inputEMail" name="email" placeholder="esempio@email.it"
+                  required>
+              </div>
+              <div class="mb-3">
+                <label for="inputPassword" class="col-form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword" name="password" required>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Invia</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FINE MODALE LOGIN +++ VA CON LA NAVBAR -->
+    
+    <!-- MODALE CARRELLO -->
+    <!-- Per eliminare effetto tema scuro, togliere data-bst-theme="dark" e classe text-white dal div 2 righe sotto -->
+    <div class="modal fade" id="cartModal" data-bs-theme="dark" tabindex="-1" aria-labelledby="#exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable text-white me-md-3" data-bs-theme="dark">
+        <div class="modal-content h-100" data-bs-theme="dark">
+          <div class="modal-header" data-bs-theme="dark">
+            <h1 class="modal-title fs-5" id=""></h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- da togliere -->
+          </div>
+          <h1 style="text-align: center;">CARRELLO</h1>
+          <div class="modal-body" data-bs-theme="dark" id="cart-body">
+    
+    
+    
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" id="">Concludi ordine</button>
+              <!-- AGGIUNGERE REINDIRIZZAMENTO A USER-->
+            </div>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+    <!-- FINE MODALE CARRELLO -->
+
+        <div class="container-fluid">
+          <div class="row"  id="container-prodotti" >
+          
+              <!-- SEZIONE FILTRI -->
+              <div class="col-xs-12 col-md-3 filtri-wrapper">
+                <div class="d-flex flex-column" id="filtri">
+                  <div class="fixed">
+                    <h1>All </h1>
+                    <h3>Filters</h3>
+                    <!-- PRICE RANGE
+                    <label for="price-range" class="form-label" style="margin-top: 1rem;"> Price</label>
+                      <input type="range" class="form-range" id="price-range" min="0" max="1000" step="5">
+                      <div class="d-flex justify-content-center">
+                        <p id="price-value" style="color: black;"></p>
+                      </div>
+                      PRINCE RANGE -->
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="Check1">
+                        <label class="form-check-label" for="Check1">Games</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="Check2">
+                        <label class="form-check-label" for="Check2">Merch</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="Check3">
+                        <label class="form-check-label" for="Check3">Acc.</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="Check4">
+                        <label class="form-check-label" for="Check4">Specials</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="Check5">
+                        <label class="form-check-label" for="Check5">Other</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="Check6">
+                        <label class="form-check-label" for="Check6">Hot</label>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <!-- FINE SEZIONE FILTRI -->
+              <!-- Sezione prodotti -->
+              <div class="col-xs-12 col-sm-9 flex-column align-items-center" id="prodotti">
+                <div class="title-container" style=" display: flex;
+                align-items: center;
+                justify-content: space-between;">
+                  <span id="valore-disponibili"></span>
+                  <h1 class="section-title">Available Products</h1>
+                </div>
+          
+                  <div id="available-container" class="row"></div>
+                  <div id="pagination-container"></div>
+                  <!-- SEZIONE PRODOTTI PRENOTABILI -->
+                  <h1 class="section-title"> Presale products  </h1>
+                  <div id="presale-container" class="row">
+                  </div>
+              </div>
+              <!-- FINE Sezione prodotti -->
+          </div>
+        </div>
+
+            <!-- IT'S A TOAST -->
+        <div class="toast-container position-fixed p-3">
+          <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="logToast">
+            <div class="toast-body">
+              Sei sicuro di voler effettuare il logout?
+              <div class="mt-2 pt-2 border-top">
+                <button type="button" class="btn btn-danger btn-sm toast-logout">Take action</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    <!-- CHIUDI IL TOAST -->
+
+        <footer>
+          <div class="container d-flex justify-content-evenly align-items-center">
+            <a class="navbar-brand" href="/views/index.html" style="padding: 0!important;">Nerd Vault</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="team"> Delivered by tcgZiopera&#169; team </div>
+          </div>
+        </footer>
+      
+    
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="/assets/scripts/shop.js"></script>
+    <script src="/assets/scripts/login.js"></script>
+    <script src="/assets/scripts/cart.js"></script>
+</body>
+</html>

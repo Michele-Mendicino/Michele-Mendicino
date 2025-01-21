@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "static",
+			"path": "Back/NerdVault/src/main/resources/static"
+		},
+		{
+			"name": "NerdVault",
+			"path": "Back/NerdVault"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "static"
+	}
+}

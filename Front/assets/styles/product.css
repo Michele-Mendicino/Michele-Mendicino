@@ -1,0 +1,216 @@
+/* 
+-Immagine grande a fianco/galleria
+-Desc sotto/ a lato
+-Form d'acquisto a fianco (quantità, prezzo, add carrello) 
+*/
+body{
+    /*background-image: url("/assets/img/yugioh-wallpaper.jpg");*/
+    background-color: white;
+    overflow-x: hidden;
+    background-image: none;
+}
+
+/* ! PROVA SLIDERS */
+
+.image-left,
+.image-right {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50vw; /* Metà della larghezza dello schermo */
+    background-size: cover; /* Adatta le immagini */
+    background-position: center;
+    z-index: -1;
+    margin-top: 50px;
+}
+
+    .image-left {
+      left: -50vw; /* Parte fuori dallo schermo */
+      background-image: url('/assets/img/yugioh-wallpaper-sx.jpeg'); /* Immagine a sinistra */
+      animation: slide-in-left 2s forwards ease-in-out;
+    }
+
+    .image-right {
+      right: -50vw; /* Parte fuori dallo schermo */
+      background-image: url('/assets/img/yugioh-wallpaper-dx.jpg'); /* Immagine a destra */
+      animation: slide-in-right 2s forwards ease-in-out;
+    }
+
+    /* Animazioni */
+    @keyframes slide-in-left {
+      to {
+        left: 0; /* Si ferma al centro */
+      }
+    }
+
+    @keyframes slide-in-right {
+      to {
+        right: 0; /* Si ferma al centro */
+      }
+    }
+
+/* ! PROVA SLIDERS */
+
+h1{
+    font-size: x-large;
+}
+
+.navbar{
+    height: 70px;
+    box-shadow: 0 0 5px 0 ;
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 70px;
+    z-index: 100; 
+    color: white;
+
+    .logo{
+        height: 50px;
+        width: auto;
+    }
+    .navbar-brand{
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: xx-large;
+        /* border-bottom: 2px white dotted; */
+    }
+    .navbar-brand:hover{
+        color: rgb(255, 255, 255, 0.75);
+    }
+
+    a{
+        font-family: "Pixelify Sans", sans-serif;
+        font-size: larger;
+        color: rgb(165,55,240);
+        text-shadow: 
+        0px 0px 5px rgba(165,55,240, 0.8),   /* Luce centrale */
+        0px 0px 15px rgba(165,55,240, 0.7),  /* Luce diffusa */
+        0px 0px 25px rgba(165,55,240, 0.6),  /* Luce più sfumata */
+        0px 0px 35px rgba(165,55,240, 0.5);  /* Luce che si dissipa */
+    }
+    a:hover {
+        color: rgb(255, 255, 255,0.75) !important;
+    }
+
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(166, 55, 240, 0);
+    color: #fff;
+    text-decoration: none;
+    /*transition: background 0.3s ease; */
+    text-shadow: 
+        0px 0px 5px rgba(165,55,240, 0.8),   
+        0px 0px 10px rgba(165,55,240, 0.7),  
+        0px 0px 15px rgba(165,55,240, 0.6),  
+        0px 0px 20px rgba(165,55,240, 0.5); 
+}
+
+.btn:hover {
+    color: rgb(255, 255, 255,0.75);
+    font-size: 1.3rem; 
+    transition: ease-in 0.3s;
+}
+
+.navigation {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.navigation button {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.navigation button:hover {
+    background: rgba(255, 254, 254, 0.8);
+}
+
+#product-container{
+    margin: auto;
+    margin-top: 5rem;
+    /*border: 1px solid red; */
+    color: white;
+}
+
+.product-img{
+    width: auto;
+    height:500px;
+    padding-top: 5%;
+    object-fit: contain;
+    align-self: center;
+}
+
+    /* background:radial-gradient(circle,rgba(0,0,0,.6)0%,rgba(0,0,0,0)100%); */
+    
+
+/*! PROVE CSS GLASS */
+#product-info {
+    width: 75%;
+    background-color: rgba(0, 0, 0, 0.3); /* Sfondo nero con opacità 0.3 */
+    transition: background-color 0.3s ease; /* Per aggiungere un effetto di transizione al passaggio del mouse */
+    letter-spacing: 2px; /* Spaziatura tra le lettere */
+    padding: 15px; /* Spaziatura interna */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Bordo bianco con opacità 0.1 */
+    border-radius: 10px; /* Angoli arrotondati */
+    display: inline-block; /* Elemento in linea con proprietà di blocco */
+    font-weight: 600; /* Font semibold */
+    backdrop-filter: blur(30px); /* Effetto di sfocatura dello sfondo */
+    -webkit-backdrop-filter: blur(30px);
+    font-size: 14px; /* Dimensione del testo */
+}
+
+#product-info:hover {
+    background-color: rgba(0, 0, 0, 0.15); /* Sfondo nero con opacità 0.15 al passaggio del mouse */
+}
+/*! PROVE CSS*/
+
+
+#product-title{
+}
+
+#product-price{
+}
+
+#product-quantity{
+}
+
+#product-available{
+    background-color: white;
+    color: blue;
+}
+
+@media (max-width: 860px) { 
+    .image-left,
+    .image-right{
+        display: none;
+    }
+    body{
+        background-image: url("/assets/img/yugioh-bg.jpg");
+    }
+    #product-info{
+        width: 100%;
+    }
+ }
+
+ @media (max-width: 600px) {
+    .product-img{
+        width: 350px;
+    }
+}
